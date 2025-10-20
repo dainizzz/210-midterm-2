@@ -206,7 +206,7 @@ public:
 };
 
 int main() {
-    cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
+    // cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
     // Simulate a line at a coffeshop, running for 20 minutes (time periods) and displaying the current line
     // When the store opens (first time period), add 5 customers to the line right away
@@ -236,10 +236,24 @@ int main() {
     // create a linked list to represent the line
     DoublyLinkedList line;
 
+    // Output
+    cout << "Store opens:" << endl;
+
     // generate 5 random numbers to represent the index of the names in the vector
     // add 5 nodes to the linked list with the indeces as the value
+    for (int i = 0; i < 5; i++) {
+        int index = rand() % customerNames.size();
+        line.push_back(index);
+        cout << '\t' << customerNames[index] << " joins the line" << endl;
+    }
 
-    // output
+    cout << "Resulting line:" << endl;
+    line.print(); // Need to add method to get the values
+
+    for (int i = 0; i < 19; i++) {
+
+    }
+
     
     return 0;
 }
