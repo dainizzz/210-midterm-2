@@ -227,91 +227,133 @@ public:
 		}
 		return count;
 	}
+
+	// This method returns the value of data for the node at the specified position in the doubly linked list, but is
+	// unused because it's causing memory errors.
+	int get_data_at_pos(int pos) const {
+		if (!head) {
+			cout << "List is empty." << endl;
+			return -1;
+		}
+
+		if (pos == 1) {
+			return head->data;
+		}
+
+		Node *temp = head;
+
+		for (int i = 1; i < pos; i++) {
+			if (!temp) {
+				cout << "Position doesn't exist." << endl;
+				delete temp;
+				return -1;
+			} else
+				temp = temp->next;
+		}
+
+		if (!temp) {
+			cout << "Position doesn't exist." << endl;
+			delete temp;
+			return -1;
+		}
+
+		if (!temp->next) {
+			delete temp;
+			return tail->data;
+		}
+
+		int data = temp->data;
+		delete temp;
+		return data;
+	}
 };
 
 int main() {
-		// cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
+	// cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
-		// A vector is initialized and used to store the customer names read from the external data file
-		vector<string> customerNames;
-		ifstream infile;
-		infile.open("names.txt");
-		string temp;
-		if (infile.good()) {
-			while (infile >> temp) {
-				customerNames.push_back(temp);
-			}
-		} else
-			cout << "Error opening file" << endl;
-		infile.close();
+	// Using the current time as the seed for the random numbers
+	srand(time(0));
 
-		// The DoublyLinkedList object is initialized and will be used to represent the coffee shop line
-		DoublyLinkedList line;
-
-		cout << "Store opens:" << endl;
-
-		// Backup solution: Add name indexes to this vector...
-		vector<int> initialNameIndexes(5);
-
-		// generate 5 random numbers to represent the index of the names in the vector
-		// add 5 nodes to the linked list with the indexes as the value
-		for (int i = 0; i < 5; i++) {
-			int index = rand() % customerNames.size();
-			line.push_back(index);
-			initialNameIndexes[i] = index;
-			cout << '\t' << customerNames[index] << " joins the line" << endl;
+	// A vector is initialized and used to store the customer names read from the external data file
+	vector<string> customerNames;
+	ifstream infile;
+	infile.open("names.txt");
+	string temp;
+	if (infile.good()) {
+		while (infile >> temp) {
+			customerNames.push_back(temp);
 		}
+	} else
+		cout << "Error opening file" << endl;
+	infile.close();
 
-		cout << "\t Resulting line:" << endl;
-		// TODO: Fix
-		// for (int i = 1; i <= 5; i++) {
-		// 	int index = line.get_data_at_pos(i);
-		// }
+	// The DoublyLinkedList object is initialized and will be used to represent the coffee shop line
+	DoublyLinkedList line;
 
-		// Backup solution: Use the initialNameIndexes vector to output initial list of names
-		for (int index: initialNameIndexes) {
-			cout << "\t\t" << customerNames[index] << endl;
-		}
+	cout << "Store opens:" << endl;
 
-		// starting i at 1 because the first time period (when the store opened and 5 customers were added) already happened
-		for (int i = 1; i < 20; i++) {
-			cout << "Time step #" << i + 1 << ':' << endl;
-			// A: 40% - The customer at the beginning of the line is being helped and ordering their coffee
-			int probability = rand() % 100 + 1; // should this be used for the whole loop or for each event?
-			if (probability <= 40) {
-				int index = line.pop_front();
-				cout << '\t' << customerNames[index] << " is served" << endl;
-			}
-			// B: 60% - A new customer joins the end of the line
-			if (probability <= 60) {
-				int index = rand() % customerNames.size();
-				line.push_back(index);
-				cout << '\t' << customerNames[index] << " joined the line" << endl;
-			}
-			// C: 20% - The customer at the end of the line leaves
-			if (probability <= 20) {
-				int index = line.pop_back();
-				cout << '\t' << customerNames[index] << " (at the rear) left the line" << endl;
-			}
-			// D: 10% - Any customer leaves
-			if (probability <= 10) {
-				int size = line.get_size_of_list();
-				int randomNode = rand() % size + 1; // delete_pos() has 1 as the position of the head node
-				int index = line.delete_pos(randomNode);
-				cout << '\t' << customerNames[index] << " left the line" << endl;
-			}
-			// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
-			if (probability <= 10) {
-				int index = rand() % customerNames.size();
-				line.push_back(index);
-				cout << '\t' << customerNames[index] << " (VIP) joins the line" << endl;
-				// Unclear if the customer served right away and thus removed from the line
-				line.pop_front();
-				cout << '\t' << customerNames[index] << " (VIP) is served" << endl;
-			}
-		}
+	// Backup solution: Add name indexes to this vector and add them to the vector when creating the nodes
+	vector<int> initialNameIndexes(5);
 
+	// generate 5 random numbers to represent the index of the names in the vector
+	// add 5 nodes to the linked list with the indexes as the value
+	for (int i = 0; i < 5; i++) {
+		int index = rand() % customerNames.size();
+		line.push_back(index);
+		initialNameIndexes[i] = index;
+		cout << '\t' << customerNames[index] << " joins the line" << endl;
+	}
+	cout << "\t Resulting line:" << endl;
 
-		return 0;
+	// This would be used instead of the backup solution if the get_data_at_post() method was working
+	// for (int i = 1; i <= 5; i++) {
+	// 	int index = line.get_data_at_pos(i);
+	// 	cout << "\t\t" << customerNames[index] << endl;
+	// }
+
+	// Backup solution: Use the initialNameIndexes vector to output initial list of names
+	for (int index: initialNameIndexes) {
+		cout << "\t\t" << customerNames[index] << endl;
 	}
 
+	// i starts at 1 because the first time period (when the store opened and 5 customers were added) already happened
+	for (int i = 1; i < 20; i++) {
+		cout << "Time step #" << i + 1 << ':' << endl;
+		// A: 40% - The customer at the beginning of the line is being helped and ordering their coffee
+		int probability = rand() % 100 + 1; // should this be used for the whole loop or for each event?
+		if (probability <= 40) {
+			int index = line.pop_front();
+			cout << '\t' << customerNames[index] << " is served" << endl;
+		}
+		// B: 60% - A new customer joins the end of the line
+		if (probability <= 60) {
+			int index = rand() % customerNames.size();
+			line.push_back(index);
+			cout << '\t' << customerNames[index] << " joined the line" << endl;
+		}
+		// C: 20% - The customer at the end of the line leaves
+		if (probability <= 20) {
+			int index = line.pop_back();
+			cout << '\t' << customerNames[index] << " (at the rear) left the line" << endl;
+		}
+		// D: 10% - Any customer leaves
+		if (probability <= 10) {
+			int size = line.get_size_of_list();
+			int randomNode = rand() % size + 1; // delete_pos() has 1 as the position of the head node
+			int index = line.delete_pos(randomNode);
+			cout << '\t' << customerNames[index] << " left the line" << endl;
+		}
+		// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
+		if (probability <= 10) {
+			int index = rand() % customerNames.size();
+			line.push_back(index);
+			cout << '\t' << customerNames[index] << " (VIP) joins the line" << endl;
+			// Unclear if the customer served right away and thus removed from the line
+			line.pop_front();
+			cout << '\t' << customerNames[index] << " (VIP) is served" << endl;
+		}
+	}
+
+
+	return 0;
+}
