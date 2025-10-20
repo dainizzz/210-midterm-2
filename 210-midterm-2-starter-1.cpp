@@ -140,13 +140,15 @@ public:
 		}
 	}
 
-	void pop_front() {
+	// Modified method to return the data value for the node being removed
+	int pop_front() {
 		if (!head) {
 			cout << "List is empty." << endl;
-			return;
+			return -1;
 		}
 
 		Node *temp = head;
+		int data = temp->data;
 
 		if (head->next) {
 			head = head->next;
@@ -154,14 +156,17 @@ public:
 		} else
 			head = tail = nullptr;
 		delete temp;
+		return data;
 	}
 
-	void pop_back() {
+	// Modified method to return the data value for the node being removed
+	int pop_back() {
 		if (!tail) {
 			cout << "List is empty." << endl;
-			return;
+			return -1;
 		}
 		Node *temp = tail;
+		int data = temp->data;
 
 		if (tail->prev) {
 			tail = tail->prev;
@@ -169,6 +174,7 @@ public:
 		} else
 			head = tail = nullptr;
 		delete temp;
+		return data;
 	}
 
 	~DoublyLinkedList() {
@@ -209,18 +215,6 @@ public:
 int main() {
 	// cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
-	// Simulate a line at a coffeshop, running for 20 minutes (time periods) and displaying the current line
-	// When the store opens (first time period), add 5 customers to the line right away
-	// Every time period after that, multiple events will occur with a given probability:
-	//     40% - The customer at the beginning of the line is being helped and ordering their coffee
-	//     60% - A new customer joins the end of the line
-	//     20% - The customer at the end of the line leaves
-	//     10% - Any customer leaves
-	//     10% - A VIP customer skips the line, goes straight to the counter, and orders
-	// names.txt has the customer names
-	// Display each event that occurs
-
-	// TODO
 	// create a vector and add the names from the text file to the vector
 	vector<string> customerNames;
 	ifstream infile;
@@ -241,7 +235,7 @@ int main() {
 	cout << "Store opens:" << endl;
 
 	// generate 5 random numbers to represent the index of the names in the vector
-	// add 5 nodes to the linked list with the indeces as the value
+	// add 5 nodes to the linked list with the indexes as the value
 	for (int i = 0; i < 5; i++) {
 		int index = rand() % customerNames.size();
 		line.push_back(index);
@@ -250,42 +244,32 @@ int main() {
 
 	cout << "Resulting line:" << endl;
 	line.print(); // Need to add method to get the values
-	int probability;
 	// starting i at 1 because the first time period (when the store opened and 5 customers were added) already happened
 	for (int i = 1; i < 20; i++) {
 		cout << "Time step #" << i + 1 << ':' << endl;
 		// A: 40% - The customer at the beginning of the line is being helped and ordering their coffee
-		probability = rand() % 100 + 1; // should this be used for the whole loop or for each event?
-		cout << probability << endl;
+		int probability = rand() % 100 + 1; // should this be used for the whole loop or for each event?
 		if (probability <= 40) {
-			line.pop_front();
-			cout << '\t' << "customerNames[index]" << " is served" << endl;
+			int index = line.pop_front();
+			cout << '\t' << customerNames[index] << " is served" << endl;
 		}
 		// B: 60% - A new customer joins the end of the line
-		probability = rand() % 100 + 1;
-		cout << probability << endl;
 		if (probability <= 60) {
 			int index = rand() % customerNames.size();
 			line.push_back(index);
 			cout << '\t' << customerNames[index] << " joined the line" << endl;
 		}
 		// C: 20% - The customer at the end of the line leaves
-		probability = rand() % 100 + 1;
-		cout << probability << endl;
 		if (probability <= 20) {
-			line.pop_back();
-			cout << '\t' << "customerNames[index]" << " (at the rear) left the line" << endl;
+			int index = line.pop_back();
+			cout << '\t' << customerNames[index] << " (at the rear) left the line" << endl;
 		}
 		// D: 10% - Any customer leaves
-		probability = rand() % 100 + 1;
-		cout << probability << endl;
 		if (probability <= 10) {
 			// get size of linked list and pop a random node
 			cout << '\t' << "customerNames[index]" << " left the line" << endl;
 		}
 		// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
-		probability = rand() % 100 + 1;
-		cout << probability << endl;
 		if (probability <= 10) {
 			int index = rand() % customerNames.size();
 			line.push_back(index);
