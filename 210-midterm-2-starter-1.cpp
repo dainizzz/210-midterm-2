@@ -82,15 +82,15 @@ public:
 		delete temp;
 	}
 
-	void delete_pos(int pos) {
+	// Modified method to return the data value for the node being removed
+	int delete_pos(int pos) {
 		if (!head) {
 			cout << "List is empty." << endl;
-			return;
+			return -1;
 		}
 
 		if (pos == 1) {
-			pop_front();
-			return;
+			return pop_front();
 		}
 
 		Node *temp = head;
@@ -98,24 +98,25 @@ public:
 		for (int i = 1; i < pos; i++) {
 			if (!temp) {
 				cout << "Position doesn't exist." << endl;
-				return;
+				return -1;
 			} else
 				temp = temp->next;
 		}
 		if (!temp) {
 			cout << "Position doesn't exist." << endl;
-			return;
+			return -1;
 		}
 
 		if (!temp->next) {
-			pop_back();
-			return;
+			return pop_back();
 		}
 
+		int data = temp->data;
 		Node *tempPrev = temp->prev;
 		tempPrev->next = temp->next;
 		temp->next->prev = tempPrev;
 		delete temp;
+		return data;
 	}
 
 	void push_back(int v) {
@@ -226,12 +227,14 @@ public:
 		}
 		return count;
 	}
+
+	// This method returns the value of data for the node at the current position in the linked list
 };
 
 int main() {
 	// cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
-	// create a vector and add the names from the text file to the vector
+	// A vector is initialized and used to store the customer names read from the external data file
 	vector<string> customerNames;
 	ifstream infile;
 	infile.open("names.txt");
@@ -244,10 +247,9 @@ int main() {
 		cout << "Error opening file" << endl;
 	infile.close();
 
-	// create a linked list to represent the line
+	// The DoublyLinkedList object is initialized and will be used to represent the coffee shop line
 	DoublyLinkedList line;
 
-	// Output
 	cout << "Store opens:" << endl;
 
 	// generate 5 random numbers to represent the index of the names in the vector
@@ -282,11 +284,10 @@ int main() {
 		}
 		// D: 10% - Any customer leaves
 		if (probability <= 10) {
-			// TODO: get size of linked list and pop a random node
 			int size = line.get_size_of_list();
 			int randomNode = rand() % size + 1; // delete_pos() has 1 as the position of the head node
-			line.delete_pos(randomNode);
-			cout << '\t' << "customerNames[index]" << " left the line" << endl;
+			int index = line.delete_pos(randomNode);
+			cout << '\t' << customerNames[index] << " left the line" << endl;
 		}
 		// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
 		if (probability <= 10) {
