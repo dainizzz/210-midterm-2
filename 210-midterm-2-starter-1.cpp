@@ -253,27 +253,46 @@ int main() {
 	int probability;
 	// starting i at 1 because the first time period (when the store opened and 5 customers were added) already happened
 	for (int i = 1; i < 20; i++) {
+		cout << "Time step #" << i + 1 << ':' << endl;
 		// A: 40% - The customer at the beginning of the line is being helped and ordering their coffee
-		probability = rand() % 100 % 1; // should this be used for the whole loop or for each event?
+		probability = rand() % 100 + 1; // should this be used for the whole loop or for each event?
+		cout << probability << endl;
 		if (probability <= 40) {
 			line.pop_front();
+			cout << '\t' << "customerNames[index]" << " is served" << endl;
 		}
 		// B: 60% - A new customer joins the end of the line
+		probability = rand() % 100 + 1;
+		cout << probability << endl;
 		if (probability <= 60) {
 			int index = rand() % customerNames.size();
 			line.push_back(index);
-			cout << '\t' << customerNames[index] << " joins the line" << endl;
+			cout << '\t' << customerNames[index] << " joined the line" << endl;
 		}
 		// C: 20% - The customer at the end of the line leaves
+		probability = rand() % 100 + 1;
+		cout << probability << endl;
 		if (probability <= 20) {
 			line.pop_back();
+			cout << '\t' << "customerNames[index]" << " (at the rear) left the line" << endl;
 		}
 		// D: 10% - Any customer leaves
+		probability = rand() % 100 + 1;
+		cout << probability << endl;
 		if (probability <= 10) {
 			// get size of linked list and pop a random node
+			cout << '\t' << "customerNames[index]" << " left the line" << endl;
 		}
 		// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
+		probability = rand() % 100 + 1;
+		cout << probability << endl;
 		if (probability <= 10) {
+			int index = rand() % customerNames.size();
+			line.push_back(index);
+			cout << '\t' << customerNames[index] << " (VIP) joins the line" << endl;
+			// Unclear if the customer served right away and thus removed from the line
+			line.pop_front();
+			cout << '\t' << customerNames[index] << " (VIP) is served" << endl;
 		}
 	}
 
