@@ -210,6 +210,22 @@ public:
 		}
 		cout << endl;
 	}
+
+	// This method traverses the doubly linked list starting at the head node, counts each node, and then returns the
+	// total number of nodes in the linked list.
+	int get_size_of_list() const{
+		Node *current = head;
+		int count = 0;
+		if (!current) {
+			cout << "List is empty." << endl;
+			return count;
+		}
+		while (current) {
+			count++;
+			current = current->next;
+		}
+		return count;
+	}
 };
 
 int main() {
@@ -243,7 +259,7 @@ int main() {
 	}
 
 	cout << "Resulting line:" << endl;
-	line.print(); // Need to add method to get the values
+	line.print(); // TODO: Need to add method to get the values
 	// starting i at 1 because the first time period (when the store opened and 5 customers were added) already happened
 	for (int i = 1; i < 20; i++) {
 		cout << "Time step #" << i + 1 << ':' << endl;
@@ -266,7 +282,10 @@ int main() {
 		}
 		// D: 10% - Any customer leaves
 		if (probability <= 10) {
-			// get size of linked list and pop a random node
+			// TODO: get size of linked list and pop a random node
+			int size = line.get_size_of_list();
+			int randomNode = rand() % size + 1; // delete_pos() has 1 as the position of the head node
+			line.delete_pos(randomNode);
 			cout << '\t' << "customerNames[index]" << " left the line" << endl;
 		}
 		// E: 10% - A VIP customer skips the line, goes straight to the counter, and orders
