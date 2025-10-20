@@ -228,7 +228,39 @@ public:
 		return count;
 	}
 
-	// This method returns the value of data for the node at the current position in the linked list
+	// This method returns the value of data for the node at the specified position in the doubly linked list
+	int get_data_at_pos(int pos) const {
+		if (!head) {
+			cout << "List is empty." << endl;
+			return -1;
+		}
+
+		if (pos == 1) {
+			return head->data;
+		}
+
+		Node *temp = head;
+
+		for (int i = 1; i < pos; i++) {
+			if (!temp) {
+				cout << "Position doesn't exist." << endl;
+				return -1;
+			} else
+				temp = temp->next;
+		}
+		if (!temp) {
+			cout << "Position doesn't exist." << endl;
+			return -1;
+		}
+
+		if (!temp->next) {
+			return tail->data;
+		}
+
+		int data = temp->data;
+		delete temp;
+		return data;
+	}
 };
 
 int main() {
@@ -261,7 +293,11 @@ int main() {
 	}
 
 	cout << "Resulting line:" << endl;
-	line.print(); // TODO: Need to add method to get the values
+	for (int i = 1; i <= 5; i++) {
+		int index = line.get_data_at_pos(i);
+		cout << "\t\t" << customerNames[index] << endl;
+	}
+
 	// starting i at 1 because the first time period (when the store opened and 5 customers were added) already happened
 	for (int i = 1; i < 20; i++) {
 		cout << "Time step #" << i + 1 << ':' << endl;
