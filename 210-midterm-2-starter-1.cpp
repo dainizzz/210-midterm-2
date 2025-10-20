@@ -206,6 +206,23 @@ public:
 int main() {
     cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
+    // Simulate a line at a coffeshop, running for 20 minutes (time periods) and displaying the current line
+    // When the store opens (first time period), add 5 customers to the line right away
+    // Every time period after that, multiple events will occur with a given probability:
+    //     40% - The customer at the beginning of the line is being helped and ordering their coffee
+    //     60% - A new customer joins the end of the line
+    //     20% - The customer at the end of the line leaves
+    //     10% - Any customer leaves
+    //     10% - A VIP customer skips the line, goes straight to the counter, and orders
+    // names.txt has the customer names
+    // Display each event that occurs
+
+    // TODO
+    // create a vector and add the names from the text file to the vector
+    // create a linked list to represent the line
+    // generate 5 random numbers to represent the index of the names in the vector
+    // add 5 nodes to the linked list with the indeces as the value
+    // output
     
     return 0;
 }
