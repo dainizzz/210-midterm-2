@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <fstream>
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
@@ -219,9 +221,24 @@ int main() {
 
     // TODO
     // create a vector and add the names from the text file to the vector
+    vector<string> customerNames;
+    ifstream infile;
+    infile.open("names.txt");
+    string temp;
+    if (infile.good()) {
+        while (infile >> temp) {
+            customerNames.push_back(temp);
+        }
+    } else
+        cout << "Error opening file" << endl;
+    infile.close();
+
     // create a linked list to represent the line
+    DoublyLinkedList line;
+
     // generate 5 random numbers to represent the index of the names in the vector
     // add 5 nodes to the linked list with the indeces as the value
+
     // output
     
     return 0;
