@@ -228,41 +228,6 @@ public:
 		return count;
 	}
 
-	// This method returns the value of data for the node at the specified position in the doubly linked list
-	int get_data_at_pos(int pos) const {
-		if (!head) {
-			cout << "List is empty." << endl;
-			return -1;
-		}
-
-		if (pos == 1) {
-			return head->data;
-		}
-
-		Node *temp = head;
-
-		for (int i = 1; i < pos; i++) {
-			if (!temp) {
-				cout << "Position doesn't exist." << endl;
-				return -1;
-			} else
-				temp = temp->next;
-		}
-		if (!temp) {
-			cout << "Position doesn't exist." << endl;
-			return -1;
-		}
-
-		if (!temp->next) {
-			return tail->data;
-		}
-
-		int data = temp->data;
-		delete temp;
-		return data;
-	}
-};
-
 int main() {
 	// cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
 
@@ -292,6 +257,7 @@ int main() {
 		cout << '\t' << customerNames[index] << " joins the line" << endl;
 	}
 
+	// TODO: Fix
 	cout << "Resulting line:" << endl;
 	for (int i = 1; i <= 5; i++) {
 		int index = line.get_data_at_pos(i);
